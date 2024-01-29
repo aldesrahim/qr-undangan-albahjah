@@ -12,8 +12,8 @@ return new class () extends Migration {
     {
         Schema::create('category_gate', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(\App\Models\Category::class)->constrained()->cascadeOnDelete();
-            $table->foreignIdFor(\App\Models\Gate::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(\App\Models\Category::class)->constrained();
+            $table->foreignIdFor(\App\Models\Gate::class)->constrained();
             $table->timestamps();
         });
     }

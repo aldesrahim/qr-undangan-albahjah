@@ -12,7 +12,7 @@ return new class () extends Migration {
     {
         Schema::create('gates', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(\App\Models\Agenda::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(\App\Models\Agenda::class)->constrained();
             $table->string('name');
             $table->timestamps();
         });

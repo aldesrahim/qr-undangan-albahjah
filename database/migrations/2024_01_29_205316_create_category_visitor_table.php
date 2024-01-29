@@ -12,8 +12,8 @@ return new class () extends Migration {
     {
         Schema::create('category_visitor', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(\App\Models\Category::class)->constrained()->cascadeOnDelete();
-            $table->foreignIdFor(\App\Models\Visitor::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(\App\Models\Category::class)->constrained();
+            $table->foreignIdFor(\App\Models\Visitor::class)->constrained();
             $table->timestamps();
         });
     }

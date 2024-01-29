@@ -12,9 +12,9 @@ return new class () extends Migration {
     {
         Schema::create('check_ins', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(\App\Models\Invitation::class)->constrained()->cascadeOnDelete();
-            $table->foreignIdFor(\App\Models\Gate::class)->constrained()->cascadeOnDelete();
-            $table->foreignIdFor(\App\Models\User::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(\App\Models\Invitation::class)->constrained();
+            $table->foreignIdFor(\App\Models\Gate::class)->constrained();
+            $table->foreignIdFor(\App\Models\User::class)->constrained();
             $table->dateTime('checked_in_at');
             $table->timestamps();
         });
