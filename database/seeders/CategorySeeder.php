@@ -14,8 +14,8 @@ class CategorySeeder extends Seeder
     public function run(): void
     {
         $categories = [
-            ['name' => 'Banat (perempuan)', 'type' => CategoryType::GENDER],
-            ['name' => 'Banin (laki-laki)', 'type' => CategoryType::GENDER],
+            ['name' => 'Banat', 'type' => CategoryType::GENDER],
+            ['name' => 'Banin', 'type' => CategoryType::GENDER],
             ['name' => 'Gold', 'type' => CategoryType::COLOR],
             ['name' => 'Pink', 'type' => CategoryType::COLOR],
             ['name' => 'Hijau', 'type' => CategoryType::COLOR],
