@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Gate extends Model
 {
@@ -32,5 +33,10 @@ class Gate extends Model
             ->belongsToMany(Category::class)
             ->using(CategoryGate::class)
             ->withTimestamps();
+    }
+
+    public function checkIns(): HasMany
+    {
+        return $this->hasMany(CheckIn::class);
     }
 }

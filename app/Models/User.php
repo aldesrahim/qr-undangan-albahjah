@@ -7,6 +7,8 @@ use App\Enums\UserRole;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -56,5 +58,18 @@ class User extends Authenticatable implements FilamentUser
             'admin' => $this->hasRole(UserRole::ADMIN),
             'staff' => $this->hasRole(UserRole::STAFF),
         };
+    }
+
+    public function gates(): BelongsToMany
+    {
+        return $this
+            ->belongsToMany(Gate::class)
+            ->using(GateUser::class)
+            ->withTimestamps();
+    }
+
+    public function checkIns(): HasMany
+    {
+        return $this->hasMany(CheckIn::class);
     }
 }

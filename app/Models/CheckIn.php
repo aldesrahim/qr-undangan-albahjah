@@ -18,4 +18,14 @@ class CheckIn extends Model
     {
         return $this->belongsTo(Invitation::class);
     }
+
+    public function gate(): BelongsTo
+    {
+        return $this->belongsTo(Gate::class);
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
 }
