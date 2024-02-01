@@ -17,8 +17,11 @@ class DatabaseSeeder extends Seeder
         $this->call(CategorySeeder::class);
         $this->call(AgendaSeeder::class);
         $this->call(BannerSeeder::class);
-        $this->call(GateSeeder::class);
-        $this->call(VisitorSeeder::class);
-        $this->call(CheckInSeeder::class);
+
+        if (config('app.env') === 'local') {
+            $this->call(GateSeeder::class);
+            $this->call(VisitorSeeder::class);
+            $this->call(CheckInSeeder::class);
+        }
     }
 }
