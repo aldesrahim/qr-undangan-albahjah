@@ -22,7 +22,7 @@
                     <div class="w-full border-t border-gray-300"></div>
                 </div>
                 <div class="relative flex justify-center">
-                    <span class="px-2 bg-white text-sm lg:text-base text-amber-500"> Deskripsi Acara </span>
+                    <span class="px-2 bg-gray-50 text-sm lg:text-base text-amber-500"> Deskripsi Acara </span>
                 </div>
             </div>
             <p class="text-base mx-auto max-w-2xl text-gray-700">
@@ -34,7 +34,7 @@
                         <div class="w-full border-t border-gray-300"></div>
                     </div>
                     <div class="relative flex justify-center">
-                        <span class="px-2 bg-white text-sm lg:text-base text-amber-500"> Undangan Untuk Anda </span>
+                        <span class="px-2 bg-gray-50 text-sm lg:text-base text-amber-500"> Undangan Untuk Anda </span>
                     </div>
                 </div>
 
@@ -95,14 +95,11 @@
                             <p class="text-base lg:text-xl my-5">Tunjukan QR Code ini pada petugas</p>
                             <div class="group block">
                                 <img
-                                    class="mx-auto object-cover h-auto w-1/3 lg:w-1/2"
+                                    class="mx-auto object-cover h-auto w-full sm:w-1/2"
                                     src="{{ $agenda->invitation->qr_url }}"
                                     alt="{{ $agenda->invitation->code }}"
                                 >
                             </div>
-                            <p class="bg-amber-200 border border-amber-400 mt-5 p-5 rounded-md">
-                                {{ $agenda->invitation->code }}
-                            </p>
                         </div>
                     </div>
                 </div>
@@ -114,7 +111,7 @@
                     <div class="w-full border-t border-gray-300"></div>
                 </div>
                 <div class="relative flex justify-center">
-                    <span class="px-2 bg-white text-sm lg:text-base text-amber-500"> Galeri </span>
+                    <span class="px-2 bg-gray-50 text-sm lg:text-base text-amber-500"> Galeri </span>
                 </div>
             </div>
 
