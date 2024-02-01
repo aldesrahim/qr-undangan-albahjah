@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\CategoryType;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -32,6 +33,24 @@ class Gate extends Model
         return $this
             ->belongsToMany(Category::class)
             ->using(CategoryGate::class)
+            ->withTimestamps();
+    }
+
+    public function genderCategories(): BelongsToMany
+    {
+        return $this
+            ->belongsToMany(Category::class)
+            ->using(CategoryGate::class)
+            ->where('type', CategoryType::GENDER)
+            ->withTimestamps();
+    }
+
+    public function colorCategories(): BelongsToMany
+    {
+        return $this
+            ->belongsToMany(Category::class)
+            ->using(CategoryGate::class)
+            ->where('type', CategoryType::COLOR)
             ->withTimestamps();
     }
 

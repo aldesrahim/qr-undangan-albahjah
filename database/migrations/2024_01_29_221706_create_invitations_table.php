@@ -12,7 +12,7 @@ return new class () extends Migration {
     {
         Schema::create('invitations', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(\App\Models\Visitor::class)->constrained();
+            $table->foreignIdFor(\App\Models\Visitor::class)->constrained()->cascadeOnDelete();
             $table->string('code')->unique();
             $table->unsignedInteger('companion')->default(0)->nullable();
             $table->unsignedInteger('person')->virtualAs('companion + 1');

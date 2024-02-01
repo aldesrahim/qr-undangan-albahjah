@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use App\Enums\CategoryType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Visitor extends Model
@@ -17,6 +19,10 @@ class Visitor extends Model
         'name',
         'address',
         'phone_number',
+    ];
+
+    protected $with = [
+        'invitation',
     ];
 
     public function agenda(): BelongsTo
@@ -32,8 +38,31 @@ class Visitor extends Model
             ->withTimestamps();
     }
 
+    public function genderCategories(): BelongsToMany
+    {
+        return $this
+            ->belongsToMany(Category::class)
+            ->using(CategoryVisitor::class)
+            ->where('type', CategoryType::GENDER)
+            ->withTimestamps();
+    }
+
+    public function colorCategories(): BelongsToMany
+    {
+        return $this
+            ->belongsToMany(Category::class)
+            ->using(CategoryVisitor::class)
+            ->where('type', CategoryType::COLOR)
+            ->withTimestamps();
+    }
+
     public function invitation(): HasOne
     {
         return $this->hasOne(Invitation::class);
+    }
+
+    public function checkIns(): HasManyThrough
+    {
+        return $this->hasManyThrough(CheckIn::class, Invitation::class);
     }
 }

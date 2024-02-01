@@ -12,7 +12,7 @@ return new class () extends Migration {
     {
         Schema::create('banners', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(\App\Models\Agenda::class)->constrained();
+            $table->foreignIdFor(\App\Models\Agenda::class)->constrained()->cascadeOnDelete();
             $table->text('image_path');
             $table->string('image_disk');
             $table->string('description')->nullable();
