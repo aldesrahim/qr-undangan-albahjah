@@ -67,8 +67,8 @@
                     Gerbang Terdaftar
                 </x-slot>
 
-                <div class="grid gap-4 grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
-                    @forelse($this->staffGates as $gate)
+                <div class="grid gap-4 grid-cols-1 md:grid-cols-3 lg:grid-cols-4" wire:ignore>
+                    @forelse($this->staffGates() as $gate)
                         <x-filament::section>
                             <x-slot name="heading">
                                 {{ $gate->name }}
