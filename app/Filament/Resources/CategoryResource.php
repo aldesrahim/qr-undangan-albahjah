@@ -12,6 +12,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Validation\Rules\Unique;
 
 class CategoryResource extends Resource
 {
@@ -26,6 +27,11 @@ class CategoryResource extends Resource
                 FormSchemaBuilder::withTimestamps([
                     Forms\Components\TextInput::make('name')
                         ->translateLabel()
+                        ->unique(
+                            ignoreRecord: true,
+                            modifyRuleUsing: fn (Unique $rule, Forms\Get $get) => $rule
+                            ->where('type', $get('type'))
+                        )
                         ->required()
                         ->maxLength(255),
                     Forms\Components\Select::make('type')

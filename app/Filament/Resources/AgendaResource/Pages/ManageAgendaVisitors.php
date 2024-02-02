@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\AgendaResource\Pages;
 
 use App\Filament\Helpers\SafeDeleteAction;
+use App\Filament\Imports\VisitorImporter;
 use App\Filament\Resources\AgendaResource;
 use App\Models\Invitation;
 use Filament\Forms;
@@ -50,7 +51,7 @@ class ManageAgendaVisitors extends ManageRelatedRecords
                     ->relationship('invitation')
                     ->schema([
                         Forms\Components\Placeholder::make('scan_url')
-                            ->content(fn ($record) => $record->scan_url)
+                            ->content(fn (?Invitation $record) => $record?->scan_url)
                             ->columnSpanFull(),
                         Forms\Components\TextInput::make('companion')
                             ->translateLabel()
@@ -113,6 +114,12 @@ class ManageAgendaVisitors extends ManageRelatedRecords
             ->filters($this->getTableCategoryFilters())
             ->headerActions([
                 Tables\Actions\CreateAction::make(),
+                Tables\Actions\ImportAction::make()
+                    ->translateLabel()
+                    ->importer(VisitorImporter::class)
+                    ->options([
+                        'agendaId' => $this->getOwnerRecord()->getKey()
+                    ]),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
