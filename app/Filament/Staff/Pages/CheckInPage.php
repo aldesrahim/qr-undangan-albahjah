@@ -19,7 +19,7 @@ use Filament\Pages\Page;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
 
-class CheckInPage extends Page implements HasInfolists, HasForms
+class CheckInPage extends Page implements HasForms, HasInfolists
 {
     use InteractsWithInfolists;
     use InteractsWithForms;
