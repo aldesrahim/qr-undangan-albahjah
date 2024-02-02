@@ -68,7 +68,7 @@
                 </x-slot>
 
                 <div class="grid gap-4 grid-cols-1 md:grid-cols-3 lg:grid-cols-4" wire:ignore>
-                    @forelse($this->staffGates() as $gate)
+                    @forelse(auth()?->user()?->gates()?->get() as $gate)
                         <x-filament::section>
                             <x-slot name="heading">
                                 {{ $gate->name }}
