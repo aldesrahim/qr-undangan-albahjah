@@ -62,7 +62,7 @@ class CheckInPage extends Page implements HasInfolists, HasForms
             return null;
         }
 
-        $registeredIds = $this->staff_gates->pluck('id')->toArray();
+        $registeredIds = $this->staffGates->pluck('id')->toArray();
 
         if (!in_array($storedId, $registeredIds)) {
             session()->forget('last-gate-id');
@@ -115,7 +115,7 @@ class CheckInPage extends Page implements HasInfolists, HasForms
                     ->required(),
                 Forms\Components\Select::make('gate_id')
                     ->label('Gerbang')
-                    ->options($this->staff_gates->pluck('name', 'id'))
+                    ->options($this->staffGates->pluck('name', 'id'))
                     ->required(),
                 Forms\Components\Actions::make([
                     Forms\Components\Actions\Action::make('submit')
