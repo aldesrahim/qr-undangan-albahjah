@@ -40,27 +40,14 @@ class ManageAgendaGates extends ManageRelatedRecords
                     ->multiple()
                     ->preload()
                     ->required(),
-                Forms\Components\Fieldset::make('Categories')
+                Forms\Components\Select::make('categories')
+                    ->relationship('categories', 'name')
+                    ->getOptionLabelFromRecordUsing(fn ($record) => $record->label)
+                    ->multiple()
                     ->translateLabel()
-                    ->schema($this->getCategoriesForm()),
-            ]);
-    }
-
-    public function getCategoriesForm(): array
-    {
-        $relations = [
-            'genderCategories',
-            'colorCategories',
-        ];
-
-        return collect($relations)
-            ->map(
-                fn ($relation) => Forms\Components\Select::make(Str::snake($relation))
-                    ->translateLabel()
-                    ->relationship($relation, 'name')
                     ->required()
-            )
-            ->toArray();
+                    ->preload(),
+            ]);
     }
 
     public function table(Table $table): Table

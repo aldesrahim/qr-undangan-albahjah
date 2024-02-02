@@ -10,7 +10,6 @@ use Filament\Forms\Form;
 use Filament\Resources\Pages\ManageRelatedRecords;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 
 class ManageAgendaVisitors extends ManageRelatedRecords
@@ -40,17 +39,18 @@ class ManageAgendaVisitors extends ManageRelatedRecords
                     ->translateLabel()
                     ->maxLength(65535)
                     ->columnSpanFull(),
-                Forms\Components\Fieldset::make('Categories')
+                Forms\Components\Select::make('categories')
+                    ->relationship('categories', 'name')
+                    ->getOptionLabelFromRecordUsing(fn ($record) => $record->label)
+                    ->multiple()
                     ->translateLabel()
-                    ->schema($this->getCategoriesForm()),
+                    ->required()
+                    ->preload(),
                 Forms\Components\Fieldset::make(__('Invitation'))
                     ->relationship('invitation')
                     ->schema([
-                        Forms\Components\Placeholder::make('qr_image')
-                            ->label(false)
-                            ->dehydrated(false)
-                            ->content(fn (?Invitation $record) => new HtmlString(sprintf('<img src="%s" alt="%s" />', $record?->qr_url, $record?->code)))
-                            ->visible(fn (?Invitation $record) => filled($record?->code))
+                        Forms\Components\Placeholder::make('scan_url')
+                            ->content(fn ($record) => $record->scan_url)
                             ->columnSpanFull(),
                         Forms\Components\TextInput::make('companion')
                             ->translateLabel()
@@ -64,24 +64,6 @@ class ManageAgendaVisitors extends ManageRelatedRecords
                     ->columnSpanFull(),
             ]);
     }
-
-    public function getCategoriesForm(): array
-    {
-        $relations = [
-            'genderCategories',
-            'colorCategories',
-        ];
-
-        return collect($relations)
-            ->map(
-                fn ($relation) => Forms\Components\Select::make(Str::snake($relation))
-                    ->translateLabel()
-                    ->relationship($relation, 'name')
-                    ->required()
-            )
-            ->toArray();
-    }
-
 
     public function table(Table $table): Table
     {
