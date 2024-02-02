@@ -11,6 +11,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Pages\ManageRelatedRecords;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 
 class ManageAgendaVisitors extends ManageRelatedRecords
@@ -19,7 +20,7 @@ class ManageAgendaVisitors extends ManageRelatedRecords
 
     protected static string $relationship = 'visitors';
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-user-plus';
 
     public static function getNavigationLabel(): string
     {
@@ -35,7 +36,8 @@ class ManageAgendaVisitors extends ManageRelatedRecords
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('phone_number')
-                    ->translateLabel(),
+                    ->translateLabel()
+                    ->dehydrateStateUsing(fn ($state) => normalize_phone_number($state)),
                 Forms\Components\Textarea::make('address')
                     ->translateLabel()
                     ->maxLength(65535)
@@ -50,9 +52,20 @@ class ManageAgendaVisitors extends ManageRelatedRecords
                 Forms\Components\Fieldset::make(__('Invitation'))
                     ->relationship('invitation')
                     ->schema([
-                        Forms\Components\Placeholder::make('scan_url')
-                            ->content(fn (?Invitation $record) => $record?->scan_url)
-                            ->columnSpanFull(),
+                        Forms\Components\TextInput::make('scan_url')
+                            ->id('scan-url-text')
+                            ->suffixAction(
+                                Forms\Components\Actions\Action::make('copy')
+                                    ->icon('heroicon-m-clipboard')
+                                    ->extraAttributes([
+                                        'class' => 'copy-btn',
+                                        'data-clipboard-target' => '#scan-url-text',
+                                        'x-init' => new HtmlString("new ClipboardJS('.copy-btn')"),
+                                    ])
+                            )
+                            ->readOnly()
+                            ->columnSpanFull()
+                            ->hiddenOn('create'),
                         Forms\Components\TextInput::make('companion')
                             ->translateLabel()
                             ->numeric()

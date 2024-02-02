@@ -11,7 +11,7 @@
 
     {{ $heading ?? '' }}
 </head>
-<body class="bg-gray-50">
+<body {{ $attributes }}>
 {{ $slot }}
 </body>
 </html>

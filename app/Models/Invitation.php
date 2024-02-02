@@ -21,8 +21,8 @@ class Invitation extends Model
         'companion',
     ];
 
-    protected $with = [
-        'agenda',
+    protected $appends = [
+        'scan_url',
     ];
 
     public static function generateCode(): string

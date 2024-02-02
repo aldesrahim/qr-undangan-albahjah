@@ -16,7 +16,7 @@ class ManageAgendaBanners extends ManageRelatedRecords
 
     protected static string $relationship = 'banners';
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-photo';
 
     public static function getNavigationLabel(): string
     {

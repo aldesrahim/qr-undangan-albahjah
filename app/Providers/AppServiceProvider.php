@@ -27,7 +27,8 @@ class AppServiceProvider extends ServiceProvider
         });
 
         FilamentAsset::register([
-            Js::make('html5-qrcode', 'https://unpkg.com/html5-qrcode')
+            Js::make('html5-qrcode', 'https://unpkg.com/html5-qrcode'),
+            Js::make('clipboard-js', 'https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js'),
         ]);
     }
 }

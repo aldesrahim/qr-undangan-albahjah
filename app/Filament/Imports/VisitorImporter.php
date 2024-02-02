@@ -22,30 +22,24 @@ class VisitorImporter extends Importer
     {
         return [
             ImportColumn::make('name')
-                ->requiredMapping()
                 ->rules(['required', 'max:255'])
                 ->label('Nama')
                 ->example('Abdurrahman'),
             ImportColumn::make('address')
                 ->label('Alamat')
-                ->requiredMapping()
                 ->example('Jl. Kemanggisan'),
             ImportColumn::make('phone_number')
                 ->label('Nomor Telepon')
-                ->requiredMapping()
                 ->example('6283893962489'),
             ImportColumn::make('companion')
                 ->label('Jumlah Pendamping')
-                ->requiredMapping()
                 ->integer()
                 ->example(2),
             ImportColumn::make('gender_category')
                 ->label('Jenis Kelamin')
-                ->requiredMapping()
                 ->example('Banat'),
             ImportColumn::make('color_category')
                 ->label('Kategori Warna')
-                ->requiredMapping()
                 ->example('Gold'),
         ];
     }
@@ -55,6 +49,7 @@ class VisitorImporter extends Importer
         return Visitor::firstOrNew([
             'agenda_id' => $this->options['agendaId'],
             'name' => $this->data['name'],
+            'phone_number' => normalize_phone_number($this->data['phone_number']),
         ]);
     }
 
@@ -73,6 +68,7 @@ class VisitorImporter extends Importer
 
     protected function beforeFill(): void
     {
+        $this->data['phone_number'] = normalize_phone_number($this->data['phone_number']);
         $this->dataBefore = $this->data;
         $this->data = [
             'name' => $this->data['name'],
@@ -124,10 +120,10 @@ class VisitorImporter extends Importer
 
     public static function getCompletedNotificationBody(Import $import): string
     {
-        $body = 'Your visitor import has completed and ' . number_format($import->successful_rows) . ' ' . str('row')->plural($import->successful_rows) . ' imported.';
+        $body = 'Impor tamu undangan sudah selesai dan ' . number_format($import->successful_rows) . ' ' . str('row')->plural($import->successful_rows) . ' berhasil diimpor.';
 
         if ($failedRowsCount = $import->getFailedRowsCount()) {
-            $body .= ' ' . number_format($failedRowsCount) . ' ' . str('row')->plural($failedRowsCount) . ' failed to import.';
+            $body .= ' ' . number_format($failedRowsCount) . ' ' . str('row')->plural($failedRowsCount) . ' gagal diimpor.';
         }
 
         return $body;

@@ -18,7 +18,7 @@ class ManageAgendaGates extends ManageRelatedRecords
 
     protected static string $relationship = 'gates';
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-arrow-left-end-on-rectangle';
 
     public static function getNavigationLabel(): string
     {

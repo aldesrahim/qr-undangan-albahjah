@@ -16,6 +16,26 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->middleware('guest');
+
+Route::get('/home', function () {
+    $user = auth()?->user();
+
+    if ($user?->hasRole(\App\Enums\UserRole::ADMIN)) {
+        return redirect()->route('filament.admin.auth.login');
+    }
+
+    if ($user?->hasRole(\App\Enums\UserRole::STAFF)) {
+        return redirect()->route('filament.staff.auth.login');
+    }
+
+    auth()->logout();
+
+    return redirect('/');
+})->middleware('auth');
+
+Route::get('/login', function () {
+    return redirect('/');
+})->name('login');
 
 Route::get('/scan/{agendaId}/{code}', ScanAgendaInvitationController::class)->name('scan-agenda-invitation');

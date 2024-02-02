@@ -21,10 +21,6 @@ class Visitor extends Model
         'phone_number',
     ];
 
-    protected $with = [
-        'invitation',
-    ];
-
     public function agenda(): BelongsTo
     {
         return $this->belongsTo(Agenda::class);
