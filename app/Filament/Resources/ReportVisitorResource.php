@@ -63,7 +63,8 @@ class ReportVisitorResource extends Resource
                             ->label(__('Staff')),
                     ])
                     ->columns(3)
-                ->columnSpanFull(),
+                    ->columnSpanFull()
+                    ->visible(fn ($record) => filled($record->checkIns)),
             ]);
     }
 
