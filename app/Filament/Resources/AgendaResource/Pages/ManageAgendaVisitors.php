@@ -6,9 +6,11 @@ use App\Filament\Helpers\SafeDeleteAction;
 use App\Filament\Imports\VisitorImporter;
 use App\Filament\Resources\AgendaResource;
 use App\Models\Invitation;
+use App\Models\Visitor;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Pages\ManageRelatedRecords;
+use Filament\Support\RawJs;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Support\HtmlString;
@@ -60,7 +62,7 @@ class ManageAgendaVisitors extends ManageRelatedRecords
                                     ->extraAttributes([
                                         'class' => 'copy-btn',
                                         'data-clipboard-target' => '#scan-url-text',
-                                        'x-init' => new HtmlString("new ClipboardJS('.copy-btn')"),
+                                        //'x-init' => new HtmlString("new ClipboardJS('.copy-btn')"),
                                     ])
                             )
                             ->readOnly()
@@ -135,8 +137,19 @@ class ManageAgendaVisitors extends ManageRelatedRecords
                     ]),
             ])
             ->actions([
+                Tables\Actions\Action::make('copy-to-clipboard')
+                    ->label('Copy URL')
+                    ->color('info')
+                    ->icon('heroicon-m-clipboard')
+                    ->extraAttributes(function (?Visitor $record) {
+                        return [
+                            'class' => 'copy-btn',
+                            'data-clipboard-text' => $record->invitation->scan_url,
+                        ];
+                    }),
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make()->action(SafeDeleteAction::setUp(['checkIns'])),
+                Tables\Actions\DeleteAction::make()
+                    ->action(SafeDeleteAction::setUp(['checkIns'])),
             ]);
     }
 
@@ -156,5 +169,30 @@ class ManageAgendaVisitors extends ManageRelatedRecords
                     ->preload()
             )
             ->toArray();
+    }
+
+    /**
+     * @return array
+     */
+    public function getExtraBodyAttributes(): array
+    {
+        return [
+            'x-data' => RawJs::make(<<<JS
+            {
+                init() {
+                    let clipboard = new ClipboardJS('.copy-btn');
+
+                    clipboard.on('success', function(e) {
+                        new FilamentNotification()
+                            .title('URL undangan berhasil di copy')
+                            .success()
+                            .send()
+
+                        e.clearSelection();
+                    });
+                }
+            }
+            JS),
+        ];
     }
 }
