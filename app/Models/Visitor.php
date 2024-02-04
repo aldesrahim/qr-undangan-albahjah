@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\CategoryType;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -20,6 +21,11 @@ class Visitor extends Model
         'address',
         'phone_number',
     ];
+
+    public function scopeInvited(Builder $query): Builder
+    {
+        return $query->whereHas('invitation');
+    }
 
     public function agenda(): BelongsTo
     {

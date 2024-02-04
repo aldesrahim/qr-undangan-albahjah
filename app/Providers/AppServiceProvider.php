@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Filament\Facades\Filament;
 use Filament\Support\Assets\Js;
 use Filament\Support\Facades\FilamentAsset;
 use Illuminate\Support\Carbon;
@@ -29,6 +30,10 @@ class AppServiceProvider extends ServiceProvider
         FilamentAsset::register([
             Js::make('html5-qrcode', 'https://unpkg.com/html5-qrcode'),
             Js::make('clipboard-js', 'https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js'),
+        ]);
+
+        Filament::registerNavigationGroups([
+            'Report',
         ]);
     }
 }

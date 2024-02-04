@@ -13,7 +13,6 @@ use Filament\Resources\Pages\ManageRelatedRecords;
 use Filament\Support\RawJs;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 
 class ManageAgendaVisitors extends ManageRelatedRecords
@@ -56,14 +55,19 @@ class ManageAgendaVisitors extends ManageRelatedRecords
                     ->schema([
                         Forms\Components\TextInput::make('scan_url')
                             ->id('scan-url-text')
-                            ->suffixAction(
-                                Forms\Components\Actions\Action::make('copy')
+                            ->suffixActions(
+                                [Forms\Components\Actions\Action::make('copy')
                                     ->icon('heroicon-m-clipboard')
                                     ->extraAttributes([
                                         'class' => 'copy-btn',
                                         'data-clipboard-target' => '#scan-url-text',
-                                        //'x-init' => new HtmlString("new ClipboardJS('.copy-btn')"),
-                                    ])
+                                    ]),
+                                    Forms\Components\Actions\Action::make('open_qr')
+                                        ->icon('heroicon-m-arrow-up-right')
+                                        ->color('success')
+                                        ->url(fn ($record) => $record?->qr_url)
+                                        ->openUrlInNewTab(),
+                                ]
                             )
                             ->readOnly()
                             ->columnSpanFull()

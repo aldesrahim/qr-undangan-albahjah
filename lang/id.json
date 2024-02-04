@@ -231,11 +231,17 @@
     "Companion": "Pendamping",
     "Banners": "Banner",
     "Banner": "Banner",
-    "Check ins count": "Jumlah Check-in",
-    "Check in status": "Status Check-in",
-    "Check in": "Check-in",
+    "Check ins count": "Jumlah Check in",
+    "Check in status": "Status Check in",
+    "Check in": "Check in",
     "Gender categories": "Jenis kelamin",
     "Color categories": "Warna",
     "Is started": "Sudah dimulai",
-    "Import visitor": "Import Tamu Undangan"
+    "Import visitor": "Import Tamu Undangan",
+    "Oldest check in": "Check in pertama",
+    "Latest check in": "Check in terakhir",
+    "Not checked in": "Belum check in",
+    "Partially checked in": "Sudah check in sebagian",
+    "All visitors": "Semua tamu undangan",
+    "Checked in at": "Check in pada"
 }

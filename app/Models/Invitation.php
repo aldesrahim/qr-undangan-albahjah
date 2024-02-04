@@ -2,11 +2,14 @@
 
 namespace App\Models;
 
+use App\Enums\VisitorCheckInStatus;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Znck\Eloquent\Relations\BelongsToThrough;
 use Znck\Eloquent\Traits\BelongsToThrough as BelongsToThroughTrait;
 
@@ -42,6 +45,15 @@ class Invitation extends Model
         return Attribute::get(fn () => $qrUrl . urlencode($this->scan_url));
     }
 
+    public function scopeCheckInStatus(Builder $query, ?VisitorCheckInStatus $status = null): Builder
+    {
+        return $query
+            ->when($status, fn (Builder $query, VisitorCheckInStatus $status) => match ($status) {
+                VisitorCheckInStatus::NOT_CHECKED_IN => $query->whereDoesntHave('checkIns'),
+                VisitorCheckInStatus::PARTIALLY_CHECKED_IN => $query->whereHas('checkIns'),
+            });
+    }
+
     public function agenda(): BelongsToThrough
     {
         return $this->belongsToThrough(Agenda::class, Visitor::class);
@@ -55,5 +67,19 @@ class Invitation extends Model
     public function checkIns(): HasMany
     {
         return $this->hasMany(CheckIn::class);
+    }
+
+    public function oldestCheckIn(): HasOne
+    {
+        return $this
+            ->hasOne(CheckIn::class)
+            ->oldestOfMany();
+    }
+
+    public function latestCheckIn(): HasOne
+    {
+        return $this
+            ->hasOne(CheckIn::class)
+            ->latestOfMany();
     }
 }

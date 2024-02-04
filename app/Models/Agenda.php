@@ -24,7 +24,21 @@ class Agenda extends Model
 
     protected $appends = [
         'is_started',
+        'time_label',
     ];
+
+    public function timeLabel(): Attribute
+    {
+        return Attribute::get(function () {
+            return sprintf(
+                '%s s/d %s',
+                $this->started_at->toReadableDateTime(),
+                $this->isUncertain()
+                    ? 'Selesai'
+                    : $this->finished_at->toReadableDateTime(),
+            );
+        });
+    }
 
     public function isStarted(): Attribute
     {

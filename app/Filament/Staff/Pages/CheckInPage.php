@@ -276,13 +276,7 @@ class CheckInPage extends Page implements HasForms, HasInfolists
         $this->visitorData = [
             'invitation_id' => $invitation->id,
             'agenda_name' => $agenda->name,
-            'agenda_time' => sprintf(
-                '%s s/d %s',
-                $agenda->started_at->toReadableDateTime(),
-                $agenda->isUncertain()
-                    ? 'Selesai'
-                    : $agenda->finished_at->toReadableDateTime(),
-            ),
+            'agenda_time' => $agenda->time_label,
             'agenda_gates' => $agenda->gates->pluck('name')->join(', '),
             'visitor_name' => $visitor->name,
             'visitor_address' => $visitor->address,
