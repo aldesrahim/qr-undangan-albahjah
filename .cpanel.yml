@@ -1,5 +1,0 @@
----
-deployment:
-  tasks:
-    - export DEPLOYPATH=/home/fgwsxsyn/subdomains/qr-undangan
-    - /bin/cp -r * $DEPLOYPATH
