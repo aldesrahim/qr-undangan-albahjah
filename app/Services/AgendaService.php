@@ -47,12 +47,12 @@ class AgendaService
             ['property' => 'twitter:description', 'content' => $description],
         ];
 
-//        if (filled($bannerUrl)) {
-//            $bannerUrl = 'https://picperf.io/' . $bannerUrl;
-//
-//            $meta[] = ['property' => 'og:image', 'content' => $bannerUrl];
-//            $meta[] = ['property' => 'twitter:image', 'content' => $bannerUrl];
-//        }
+        //if (filled($bannerUrl)) {
+        //    $bannerUrl = 'https://picperf.io/' . $bannerUrl;
+
+        //    $meta[] = ['property' => 'og:image', 'content' => $bannerUrl];
+        //    $meta[] = ['property' => 'twitter:image', 'content' => $bannerUrl];
+        //}
 
         if (filled($qrUrl)) {
             $meta[] = ['name' => 'image', 'property' => 'og:image', 'content' => $qrUrl];
