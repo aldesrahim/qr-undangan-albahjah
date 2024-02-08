@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\InvitationMessage;
 use App\Filament\Helpers\FormSchemaBuilder;
 use App\Filament\Helpers\SafeDeleteAction;
 use App\Filament\Resources\AgendaResource\Pages;
@@ -13,6 +14,8 @@ use Filament\Resources\Pages\Page;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Contracts\Support\Htmlable;
+use Illuminate\Support\HtmlString;
 
 class AgendaResource extends Resource
 {
@@ -42,8 +45,37 @@ class AgendaResource extends Resource
                     Forms\Components\Textarea::make('description')
                         ->translateLabel()
                         ->columnSpanFull(),
+                    Forms\Components\Textarea::make('invitation_message')
+                        ->label('Pesan Undangan')
+                        ->rows(20)
+                        ->helperText(static::getInvitationMessageHelperText())
+                        ->columnSpanFull(),
                 ])
             ]);
+    }
+
+    public static function getInvitationMessageHelperText(): Htmlable
+    {
+        $listHtml = collect(InvitationMessage::cases())
+            ->map(
+                fn (InvitationMessage $item) => sprintf(
+                    '<li class="pl-3 md:pl-5"><span class="font-bold">%s</span>: %s</li>',
+                    $item->placeholder(),
+                    $item->description(),
+                )
+            )
+            ->join(PHP_EOL);
+
+        return new HtmlString(<<<HTML
+<div>
+    <p>Placeholder</p>
+    <div class="flex text-xs">
+        <ul class="ml-5">
+            $listHtml
+        </ul>
+    </div>
+</div>
+HTML);
     }
 
     public static function table(Table $table): Table

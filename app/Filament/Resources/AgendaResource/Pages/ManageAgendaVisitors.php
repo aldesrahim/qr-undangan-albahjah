@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\AgendaResource\Pages;
 
+use App\Enums\InvitationMessage;
 use App\Filament\Helpers\SafeDeleteAction;
 use App\Filament\Imports\VisitorImporter;
 use App\Filament\Resources\AgendaResource;
@@ -218,22 +219,22 @@ class ManageAgendaVisitors extends ManageRelatedRecords
             return false;
         }
 
+        $visitor = $record->visitor;
         $agenda = $record->visitor->agenda;
 
-        $message = <<<EOL
-Assalamualaikum wr. wb.
-
-Kami ingin mengundang bapak/ibu untuk hadir di acara kami, yang berjudul: "$agenda->name", yang akan diselenggarakan pada hari $agenda->time_label.
-
-Silakan kunjungi link ini untuk melihat undangan:
-$record->scan_url
-[Kode: $record->code]
-EOL;
+        $message = InvitationMessage::apply($agenda->invitation_message, [
+            InvitationMessage::NAME->value => $visitor->name,
+            InvitationMessage::PHONE_NUMBER->value => $visitor->phone_number,
+            InvitationMessage::ADDRESS->value => $visitor->address,
+            InvitationMessage::COMPANION->value => $record->companion,
+            InvitationMessage::URL->value => $record->scan_url,
+            InvitationMessage::CODE->value => $record->code,
+        ]);
 
         return sprintf(
             'https://wa.me/%s?text=%s',
             $record?->visitor?->phone_number,
-            urlencode($message)
+            rawurlencode($message)
         );
     }
 }

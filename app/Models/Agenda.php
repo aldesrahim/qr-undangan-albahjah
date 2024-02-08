@@ -15,6 +15,7 @@ class Agenda extends Model
         'finished_at',
         'short_description',
         'description',
+        'invitation_message',
     ];
 
     protected $casts = [
