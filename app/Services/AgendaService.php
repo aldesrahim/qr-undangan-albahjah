@@ -28,17 +28,18 @@ class AgendaService
         $appUrl = config('app.url');
         $title = $agenda->name;
         $description = $agenda->short_description ?? $title;
-        $banner = $agenda?->banners?->first();
+
+        $qrUrl = $agenda->invitation?->qr_url;
+        $banner = $agenda->banners?->first();
         $bannerUrl = $banner?->image_url;
 
         $meta = [
             ['name' => 'title', 'content' => $title],
-            ['name' => 'description', 'content' => $description],
+            ['name' => 'description', 'property' => 'og:description', 'content' => $description],
 
             ['property' => 'og:type', 'content' => 'website'],
             ['property' => 'og:url', 'content' => $appUrl],
             ['property' => 'og:title', 'content' => $title],
-            ['property' => 'og:description', 'content' => $description],
 
             ['property' => 'twitter:card', 'content' => 'summary_large_image'],
             ['property' => 'twitter:url', 'content' => $appUrl],
@@ -46,11 +47,16 @@ class AgendaService
             ['property' => 'twitter:description', 'content' => $description],
         ];
 
-        if (filled($bannerUrl)) {
-            $bannerUrl = 'https://picperf.io/' . $bannerUrl;
+//        if (filled($bannerUrl)) {
+//            $bannerUrl = 'https://picperf.io/' . $bannerUrl;
+//
+//            $meta[] = ['property' => 'og:image', 'content' => $bannerUrl];
+//            $meta[] = ['property' => 'twitter:image', 'content' => $bannerUrl];
+//        }
 
-            $meta[] = ['property' => 'og:image', 'content' => $bannerUrl];
-            $meta[] = ['property' => 'twitter:image', 'content' => $bannerUrl];
+        if (filled($qrUrl)) {
+            $meta[] = ['name' => 'image', 'property' => 'og:image', 'content' => $qrUrl];
+            $meta[] = ['property' => 'twitter:image', 'content' => $qrUrl];
         }
 
         if (!$asHtml) {

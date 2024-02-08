@@ -40,7 +40,7 @@ class Invitation extends Model
 
     public function qrUrl(): Attribute
     {
-        $qrUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=';
+        $qrUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=';
 
         return Attribute::get(fn () => $qrUrl . urlencode($this->scan_url));
     }
