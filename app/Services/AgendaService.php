@@ -47,8 +47,10 @@ class AgendaService
         ];
 
         if (filled($bannerUrl)) {
+            $bannerUrl = 'https://picperf.io/' . $bannerUrl;
+
             $meta[] = ['property' => 'og:image', 'content' => $bannerUrl];
-            $meta[] = ['property' => 'twitter:image', 'content' => 'https://picperf.io/' . $bannerUrl];
+            $meta[] = ['property' => 'twitter:image', 'content' => $bannerUrl];
         }
 
         if (!$asHtml) {
