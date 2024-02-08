@@ -17,3 +17,14 @@ use Illuminate\Support\Facades\Artisan;
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
+
+Artisan::command('visitor:fix-phone-number', function () {
+    $query = \App\Models\Visitor::query()
+        ->where('phone_number', '<>', '')
+        ->whereNotNull('phone_number');
+
+    foreach ($query->cursor() as $visitor) {
+        $visitor->phone_number = normalize_phone_number($visitor->phone_number);
+        $visitor->save();
+    }
+});

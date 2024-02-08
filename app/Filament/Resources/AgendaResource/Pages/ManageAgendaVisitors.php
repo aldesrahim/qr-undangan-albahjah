@@ -55,20 +55,25 @@ class ManageAgendaVisitors extends ManageRelatedRecords
                     ->schema([
                         Forms\Components\TextInput::make('scan_url')
                             ->id('scan-url-text')
-                            ->suffixActions(
-                                [Forms\Components\Actions\Action::make('copy')
+                            ->suffixActions([
+                                Forms\Components\Actions\Action::make('copy')
                                     ->icon('heroicon-m-clipboard')
                                     ->extraAttributes([
                                         'class' => 'copy-btn',
                                         'data-clipboard-target' => '#scan-url-text',
                                     ]),
-                                    Forms\Components\Actions\Action::make('open_qr')
-                                        ->icon('heroicon-m-arrow-up-right')
-                                        ->color('success')
-                                        ->url(fn ($record) => $record?->qr_url)
-                                        ->openUrlInNewTab(),
-                                ]
-                            )
+                                Forms\Components\Actions\Action::make('open_qr')
+                                    ->icon('heroicon-m-arrow-up-right')
+                                    ->color('success')
+                                    ->url(fn ($record) => $record?->qr_url)
+                                    ->openUrlInNewTab(),
+                                Forms\Components\Actions\Action::make('share_to_whatsapp')
+                                    ->icon('heroicon-m-share')
+                                    ->color('info')
+                                    ->url(fn ($record) => static::getWhatsAppLink($record))
+                                    ->hidden(fn ($record) => empty($record?->visitor?->phone_number))
+                                    ->openUrlInNewTab(),
+                            ])
                             ->readOnly()
                             ->columnSpanFull()
                             ->hiddenOn('create'),
@@ -198,5 +203,30 @@ class ManageAgendaVisitors extends ManageRelatedRecords
             }
             JS),
         ];
+    }
+
+    public static function getWhatsAppLink(?Invitation $record): bool|string
+    {
+        if (!$record) {
+            return false;
+        }
+
+        $agenda = $record->visitor->agenda;
+
+        $message = <<<EOL
+Assalamualaikum wr. wb.
+
+Kami ingin mengundang bapak/ibu untuk hadir di acara kami, yang berjudul: "$agenda->name", yang akan diselenggarakan pada hari $agenda->time_label.
+
+Silakan kunjungi link ini untuk melihat undangan:
+$record->scan_url
+[Kode: $record->code]
+EOL;
+
+        return sprintf(
+            'https://wa.me/%s?text=%s',
+            $record?->visitor?->phone_number,
+            urlencode($message)
+        );
     }
 }

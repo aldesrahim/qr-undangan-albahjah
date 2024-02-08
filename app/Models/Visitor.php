@@ -22,6 +22,17 @@ class Visitor extends Model
         'phone_number',
     ];
 
+    public function scopeSearch(Builder $query, $term): Builder
+    {
+        return $query->where(
+            fn (Builder $query) => $query
+                ->orWhere('name', 'like', "%$term%")
+                ->orWhere('address', 'like', "%$term%")
+                ->orWhere('phone_number', 'like', "%$term%")
+                ->orWhereHas('invitation', fn ($query) => $query->where('code', 'like', "%$term%"))
+        );
+    }
+
     public function scopeInvited(Builder $query): Builder
     {
         return $query->whereHas('invitation');
