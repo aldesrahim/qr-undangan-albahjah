@@ -99,10 +99,13 @@ class VisitorImporter extends Importer
         /** @var Visitor $record */
         $record = $this->record;
 
-        $record->invitation()->create([
-            'code' => Invitation::generateCode(),
-            'companion' => $this->originalData['companion'] ?? 0
-        ]);
+        $invitation = $record->invitation()
+            ->firstOrNew(values: [
+                'companion' => $this->originalData['companion'] ?? 0
+            ]);
+
+        $invitation->code ??= Invitation::generateCode();
+        $invitation->save();
 
         $categories = collect([
             $this->getCategory(
