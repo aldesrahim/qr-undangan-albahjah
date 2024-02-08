@@ -49,7 +49,7 @@ class VisitorImporter extends Importer
         return Visitor::firstOrNew([
             'agenda_id' => $this->options['agendaId'],
             'name' => $this->data['name'],
-            'phone_number' => normalize_phone_number($this->data['phone_number']),
+            //'phone_number' => normalize_phone_number($this->data['phone_number']),
         ]);
     }
 
