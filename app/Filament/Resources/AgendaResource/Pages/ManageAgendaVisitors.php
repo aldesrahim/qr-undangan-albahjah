@@ -146,7 +146,14 @@ class ManageAgendaVisitors extends ManageRelatedRecords
                     ]),
             ])
             ->actions([
-                Tables\Actions\Action::make('copy-to-clipboard')
+                Tables\Actions\Action::make('share_to_whatsapp')
+                    ->label('Kirim WA')
+                    ->icon('heroicon-m-share')
+                    ->color('success')
+                    ->url(fn ($record) => static::getWhatsAppLink($record->invitation))
+                    ->hidden(fn ($record) => empty($record?->phone_number))
+                    ->openUrlInNewTab(),
+                Tables\Actions\Action::make('copy')
                     ->label('Copy URL')
                     ->color('info')
                     ->icon('heroicon-m-clipboard')

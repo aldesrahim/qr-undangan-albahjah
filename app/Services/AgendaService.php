@@ -35,29 +35,26 @@ class AgendaService
 
         $meta = [
             ['name' => 'title', 'content' => $title],
-            ['name' => 'description', 'property' => 'og:description', 'content' => $description],
+            ['name' => 'description', 'content' => $description],
 
             ['property' => 'og:type', 'content' => 'website'],
-            ['property' => 'og:url', 'content' => $appUrl],
             ['property' => 'og:title', 'content' => $title],
+            ['property' => 'og:description', 'content' => $description],
 
-            ['property' => 'twitter:card', 'content' => 'summary_large_image'],
-            ['property' => 'twitter:url', 'content' => $appUrl],
-            ['property' => 'twitter:title', 'content' => $title],
-            ['property' => 'twitter:description', 'content' => $description],
+            ['property' => 'og:type', 'content' => 'website'],
+            ['property' => 'og:title', 'content' => $title],
+            ['property' => 'og:image', 'content' => $qrUrl],
+            ['property' => 'og:description', 'content' => $description],
+            ['property' => 'og:url', 'content' => $appUrl],
+            ['property' => 'og:site_name', 'content' => config('app.name')],
+            ['property' => 'og:locale', 'content' => 'id_ID'],
+
+            ['name' => 'twitter:card', 'content' => 'summary_large_image'],
+            ['name' => 'twitter:url', 'content' => $appUrl],
+            ['name' => 'twitter:title', 'content' => $title],
+            ['name' => 'twitter:description', 'content' => $description],
+            ['property' => 'twitter:image', 'content' => $qrUrl]
         ];
-
-        //if (filled($bannerUrl)) {
-        //    $bannerUrl = 'https://picperf.io/' . $bannerUrl;
-
-        //    $meta[] = ['property' => 'og:image', 'content' => $bannerUrl];
-        //    $meta[] = ['property' => 'twitter:image', 'content' => $bannerUrl];
-        //}
-
-        if (filled($qrUrl)) {
-            $meta[] = ['name' => 'image', 'property' => 'og:image', 'content' => $qrUrl];
-            $meta[] = ['property' => 'twitter:image', 'content' => $qrUrl];
-        }
 
         if (!$asHtml) {
             return $meta;
