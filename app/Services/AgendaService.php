@@ -28,9 +28,8 @@ class AgendaService
         $appUrl = config('app.url');
         $title = $agenda->name;
         $description = $agenda->short_description ?? $title;
-
-        $invitation = $agenda->invitation;
-        $qrUrl = $invitation?->qr_url;
+        $banner = $agenda?->banners?->first();
+        $bannerUrl = $banner?->image_url;
 
         $meta = [
             ['name' => 'title', 'content' => $title],
@@ -47,9 +46,9 @@ class AgendaService
             ['property' => 'twitter:description', 'content' => $description],
         ];
 
-        if (filled($qrUrl)) {
-            $meta[] = ['property' => 'og:image', 'content' => $qrUrl];
-            $meta[] = ['property' => 'twitter:image', 'content' => $qrUrl];
+        if (filled($bannerUrl)) {
+            $meta[] = ['property' => 'og:image', 'content' => $bannerUrl];
+            $meta[] = ['property' => 'twitter:image', 'content' => 'https://picperf.io/' . $bannerUrl];
         }
 
         if (!$asHtml) {
