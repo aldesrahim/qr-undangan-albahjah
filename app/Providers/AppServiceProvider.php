@@ -20,13 +20,13 @@ class AppServiceProvider extends ServiceProvider
 
         if ($publicPath) {
             app()->usePublicPath(
-                base_path($publicPath)
+                realpath(base_path($publicPath))
             );
         }
 
         if ($storagePath) {
             app()->useStoragePath(
-                base_path($storagePath)
+                realpath(base_path($storagePath))
             );
         }
     }
