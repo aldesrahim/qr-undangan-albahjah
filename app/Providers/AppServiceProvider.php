@@ -15,20 +15,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $publicPath = config('filesystems.public_path');
-        $storagePath = config('filesystems.storage_path');
-
-        if ($publicPath) {
-            app()->usePublicPath(
-                realpath(base_path($publicPath))
-            );
-        }
-
-        if ($storagePath) {
-            app()->useStoragePath(
-                realpath(base_path($storagePath))
-            );
-        }
+        $this->usePaths();
     }
 
     /**
@@ -48,5 +35,25 @@ class AppServiceProvider extends ServiceProvider
         Filament::registerNavigationGroups([
             'Report',
         ]);
+
+        $this->usePaths();
+    }
+
+    public function usePaths(): void
+    {
+        $publicPath = config('filesystems.public_path');
+        $storagePath = config('filesystems.storage_path');
+
+        if ($publicPath) {
+            app()->usePublicPath(
+                realpath(base_path($publicPath))
+            );
+        }
+
+        if ($storagePath) {
+            app()->useStoragePath(
+                realpath(base_path($storagePath))
+            );
+        }
     }
 }
