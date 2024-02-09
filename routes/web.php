@@ -41,7 +41,15 @@ Route::get('/login', function () {
 Route::get('/scan/{agendaId}/{code}', ScanAgendaInvitationController::class)->name('scan-agenda-invitation');
 
 Route::get('filesystem-check', function () {
-    return response()->json(
-        config('filesystems.links')
-    );
+    return response()->json([
+        'links' => config('filesystems.links'),
+        'public_path' => [
+            'value' => config('filesystems.public_path'),
+            'base_path' => base_path(config('filesystems.public_path')),
+        ],
+        'storage_path' => [
+            'value' => config('filesystems.storage_path'),
+            'base_path' => base_path(config('filesystems.storage_path')),
+        ],
+    ]);
 });
