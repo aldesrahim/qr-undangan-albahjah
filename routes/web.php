@@ -39,3 +39,9 @@ Route::get('/login', function () {
 })->name('login');
 
 Route::get('/scan/{agendaId}/{code}', ScanAgendaInvitationController::class)->name('scan-agenda-invitation');
+
+Route::get('filesystem-check', function () {
+    return response()->json(
+        config('filesystems.links')
+    );
+});
