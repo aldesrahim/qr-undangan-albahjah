@@ -53,5 +53,8 @@ Route::get('filesystem-check', function () {
             'base_path' => base_path(config('filesystems.storage_path')),
             'realpath' => realpath(base_path(config('filesystems.storage_path'))),
         ],
+        'manual' => [
+            public_path('storage') => storage_path('app/public'),
+        ],
     ]);
 });
