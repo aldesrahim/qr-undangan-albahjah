@@ -58,3 +58,14 @@ Route::get('filesystem-check', function () {
         ],
     ]);
 });
+
+Route::get('filesystem-link', function () {
+    $link = public_path('storage');
+    $target = storage_path('app/public');
+
+    \Illuminate\Support\Facades\File::link($target, $link);
+
+    return response()->json([
+        'status' => true,
+    ]);
+});
