@@ -5,9 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Znck\Eloquent\Relations\BelongsToThrough;
+use Znck\Eloquent\Traits\BelongsToThrough as BelongsToThroughTrait;
 
 class CheckIn extends Model
 {
+    use BelongsToThroughTrait;
+
     protected $fillable = [
         'invitation_id',
         'gate_id',
@@ -38,6 +42,11 @@ class CheckIn extends Model
 
             return $checkIn->format('M j, Y H:i:s');
         });
+    }
+
+    public function agenda(): BelongsToThrough
+    {
+        return $this->belongsToThrough(Agenda::class, [Visitor::class, Invitation::class]);
     }
 
     public function invitation(): BelongsTo

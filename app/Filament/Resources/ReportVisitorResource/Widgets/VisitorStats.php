@@ -4,6 +4,7 @@ namespace App\Filament\Resources\ReportVisitorResource\Widgets;
 
 use App\Enums\VisitorCheckInStatus;
 use App\Filament\Resources\ReportVisitorResource\Pages\ListReportVisitors;
+use App\Models\CheckIn;
 use App\Models\Invitation;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
@@ -31,15 +32,16 @@ class VisitorStats extends BaseWidget
                     ->checkInStatus($value)
             );
 
-        $totalPerson = $baseQuery->sum('person') ?? 0;
-        $totalCheckedIn = $baseQuery->whereHas('checkIns')->sum('person') ?? 0;
-        $totalNotCheckedIn = $totalPerson - $totalCheckedIn;
+        $totalPerson = $baseQuery->sum('person');
+        $totalCheckedIn = CheckIn::query()
+            ->whereHas('agenda', fn ($query) => $query->where('agendas.id', $agendaId))
+            ->count();
 
         return [
             Stat::make('Tamu', $baseQuery->count()),
             Stat::make('Tamu + Pendamping', $totalPerson),
             Stat::make('Tamu + Pendamping Hadir', $totalCheckedIn),
-            Stat::make('Tamu + Pendamping Tidak Hadir', $totalNotCheckedIn),
+            Stat::make('Tamu + Pendamping Tidak Hadir', $totalPerson - $totalCheckedIn),
         ];
     }
 
