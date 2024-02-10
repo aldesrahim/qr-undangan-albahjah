@@ -161,7 +161,7 @@ class ManageAgendaVisitors extends ManageRelatedRecords
                     ->extraAttributes(function (?Visitor $record) {
                         return [
                             'class' => 'copy-btn',
-                            'data-clipboard-text' => $record->invitation->scan_url,
+                            'data-clipboard-text' => $record->invitation?->scan_url,
                         ];
                     }),
                 Tables\Actions\EditAction::make(),
