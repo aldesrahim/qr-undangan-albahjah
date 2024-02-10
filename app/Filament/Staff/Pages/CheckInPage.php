@@ -80,7 +80,7 @@ class CheckInPage extends Page implements HasForms, HasInfolists
         $storedId = session()->get('last-gate-id');
 
         if (blank($storedId)) {
-            return null;
+            return $this->staffGates->value('id');
         }
 
         $registeredIds = $this->staffGates->pluck('id')->toArray();
