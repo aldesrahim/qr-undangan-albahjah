@@ -25,6 +25,14 @@ class CategoryResource extends Resource
         return $form
             ->schema([
                 FormSchemaBuilder::withTimestamps([
+                    Forms\Components\Select::make('type')
+                        ->translateLabel()
+                        ->required()
+                        ->live()
+                        ->options(CategoryType::class)
+                        ->afterStateUpdated(function (Forms\Set $set) {
+                            $set('name', null);
+                        }),
                     Forms\Components\TextInput::make('name')
                         ->translateLabel()
                         ->unique(
@@ -34,10 +42,10 @@ class CategoryResource extends Resource
                         )
                         ->required()
                         ->maxLength(255),
-                    Forms\Components\Select::make('type')
+                    Forms\Components\ColorPicker::make('color')
                         ->translateLabel()
-                        ->required()
-                        ->options(CategoryType::class),
+                        ->required(fn (Forms\Get $get) => CategoryType::tryFrom($get('type')) === CategoryType::COLOR)
+                        ->visible(fn (Forms\Get $get) => CategoryType::tryFrom($get('type')) === CategoryType::COLOR),
                 ]),
             ]);
     }

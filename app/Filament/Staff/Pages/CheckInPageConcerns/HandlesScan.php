@@ -51,6 +51,11 @@ trait HandlesScan
         $agenda = $invitation->agenda;
         $visitor = $invitation->visitor;
 
+        $visitor->loadMissing([
+            'genderCategories',
+            'colorCategories',
+        ]);
+
         $this->visitorData = [
             'invitation_id' => $invitation->id,
             'agenda_name' => $agenda->name,
@@ -59,7 +64,8 @@ trait HandlesScan
             'visitor_name' => $visitor->name,
             'visitor_address' => $visitor->address,
             'visitor_phone_number' => $visitor->phone_number,
-            'visitor_categories' => $visitor->categories->pluck('label')->join(', '),
+            'visitor_genders' => $visitor->genderCategories->pluck('name')->join(', '),
+            'visitor_colors' => $visitor->colorCategories,
             'visitor_checked_in' => sprintf(
                 '%s / %s',
                 $invitation->visitor_checked_in,

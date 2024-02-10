@@ -33,8 +33,11 @@ trait HandlesVisitorInfolist
                             ->label('Nomor telepon'),
                         Infolists\Components\TextEntry::make('visitor_checked_in')
                             ->label('Jumlah Orang'),
-                        Infolists\Components\TextEntry::make('visitor_categories')
-                            ->label('Kategori'),
+                        Infolists\Components\TextEntry::make('visitor_genders')
+                            ->label('Jenis Kelamin'),
+                        Infolists\Components\ViewEntry::make('visitor_colors')
+                            ->label('Warna')
+                            ->view('filament.staff.pages.check-in.colors'),
                     ]),
             ]);
     }

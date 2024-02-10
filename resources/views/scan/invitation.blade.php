@@ -39,17 +39,6 @@
                     </p>
                 </div>
             </li>
-
-            @if(filled($agenda->invitation->visitor->categories))
-                <li class="px-6 py-4">
-                    <div class="text-left">
-                        <p class="text-amber-600 text-base">Kategori</p>
-                        <p class="text-base md:text-xl">
-                            {!! $agenda->invitation->visitor->categories->pluck('label')->join('<br />') !!}
-                        </p>
-                    </div>
-                </li>
-            @endif
         </ul>
     </div>
     <div class="overflow-hidden rounded-md">

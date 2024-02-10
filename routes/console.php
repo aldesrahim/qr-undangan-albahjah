@@ -28,3 +28,20 @@ Artisan::command('visitor:fix-phone-number', function () {
         $visitor->save();
     }
 });
+
+Artisan::command('categories:generate-colors', function () {
+    \App\Models\Category::query()
+        ->where('type', \App\Enums\CategoryType::COLOR)
+        ->whereNull('color')
+        ->each(function (\App\Models\Category $category) {
+            $category->update([
+                'color' => match (strtolower($category->name)) {
+                    'gold' => '#ffd700',
+                    'pink' => '#ffc0cb',
+                    'hijau' => '#00ff00',
+                    'biru' => '#0000ff',
+                    default => '#ff0000',
+                },
+            ]);
+        });
+});
