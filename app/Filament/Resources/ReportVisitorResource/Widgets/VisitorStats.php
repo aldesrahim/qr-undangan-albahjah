@@ -28,11 +28,11 @@ class VisitorStats extends BaseWidget
             ->when(
                 VisitorCheckInStatus::tryFrom($checkInStatus),
                 fn ($query, $value) => $query
-                ->checkInStatus($value)
+                    ->checkInStatus($value)
             );
 
         $totalPerson = $baseQuery->sum('person') ?? 0;
-        $totalCheckedIn = $baseQuery->withCount('checkIns')->value('check_ins_count') ?? 0;
+        $totalCheckedIn = $baseQuery->whereHas('checkIns')->sum('person') ?? 0;
         $totalNotCheckedIn = $totalPerson - $totalCheckedIn;
 
         return [
