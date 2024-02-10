@@ -64,7 +64,7 @@ trait HandlesScan
             'visitor_name' => $visitor->name,
             'visitor_address' => $visitor->address,
             'visitor_phone_number' => $visitor->phone_number,
-            'visitor_genders' => $visitor->genderCategories->pluck('name')->join(', '),
+            'visitor_genders' => $visitor->genderCategories->pluck('name')->join(', ') ?? '-',
             'visitor_colors' => $visitor->colorCategories,
             'visitor_checked_in' => sprintf(
                 '%s / %s',
