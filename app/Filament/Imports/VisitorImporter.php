@@ -24,22 +24,28 @@ class VisitorImporter extends Importer
             ImportColumn::make('name')
                 ->rules(['required', 'max:255'])
                 ->label('Nama')
+                ->requiredMapping()
                 ->example('Abdurrahman'),
             ImportColumn::make('address')
                 ->label('Alamat')
+                ->requiredMapping()
                 ->example('Jl. Kemanggisan'),
             ImportColumn::make('phone_number')
                 ->label('Nomor Telepon')
+                ->requiredMapping()
                 ->example('6283893962489'),
             ImportColumn::make('companion')
                 ->label('Jumlah Pendamping')
+                ->requiredMapping()
                 ->integer()
                 ->example(2),
             ImportColumn::make('gender_category')
                 ->label('Jenis Kelamin')
+                ->requiredMapping()
                 ->example('Banat'),
             ImportColumn::make('color_category')
                 ->label('Kategori Warna')
+                ->requiredMapping()
                 ->example('Gold'),
         ];
     }
@@ -48,7 +54,7 @@ class VisitorImporter extends Importer
     {
         return Visitor::firstOrNew([
             'agenda_id' => $this->options['agendaId'],
-            'name' => $this->data['name'],
+            'name' => trim($this->data['name']),
             //'phone_number' => normalize_phone_number($this->data['phone_number']),
         ]);
     }
@@ -68,6 +74,7 @@ class VisitorImporter extends Importer
 
     protected function beforeFill(): void
     {
+        $this->data = array_map(fn ($value) => trim($value), $this->data);
         $this->data['phone_number'] = normalize_phone_number($this->data['phone_number']);
         $this->dataBefore = $this->data;
         $this->data = [

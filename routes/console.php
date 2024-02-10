@@ -29,6 +29,16 @@ Artisan::command('visitor:fix-phone-number', function () {
     }
 });
 
+Artisan::command('visitor:fix-addresses', function () {
+    \App\Models\Visitor::query()
+        ->whereNotNull('address')
+        ->each(function (\App\Models\Visitor $visitor) {
+            $visitor->update([
+                'address' => $visitor->address,
+            ]);
+        });
+});
+
 Artisan::command('categories:generate-colors', function () {
     \App\Models\Category::query()
         ->where('type', \App\Enums\CategoryType::COLOR)
