@@ -13,11 +13,15 @@ if (!function_exists('carbon')) {
 if (!function_exists('normalize_phone_number')) {
     function normalize_phone_number($phoneNumber): string
     {
-        $phoneNumber = str($phoneNumber)->replaceMatches('~\D~', '');
+        $phoneNumber = str($phoneNumber);
+
+        if (!$phoneNumber->startsWith('+')) {
+            $phoneNumber = $phoneNumber->replaceMatches('~\D~', '');
+        }
+
         $phoneNumber = match (true) {
             $phoneNumber->startsWith('6262') => $phoneNumber->replaceFirst('6262', '0'),
             $phoneNumber->startsWith('62') => $phoneNumber->replaceFirst('62', '0'),
-            !$phoneNumber->startsWith('0') => $phoneNumber->prepend('0'),
             default => $phoneNumber,
         };
 
